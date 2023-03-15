@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.loading {
+  display: inline-block;
+  position: relative;
+}
+.loading::after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid black;
+  border-color: black transparent black transparent;
+  animation: loading 1.2s linear infinite;
+  position: absolute;
+  z-index: 1;
+  top: calc(50% - 32px);
+  right: calc(50% - 32px);
+}
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -1,16 +1,25 @@
 import PokemonCard from '@/components/PokemonCard';
 import { Pokemon } from '@/types/pokemon';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function Home() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [numberPerPage, setNumberPerPage] = useState(20);
+  const [pageNumber, setPageNumber] = useState(0);
 
   useEffect(() => {
     fetch('https://api-pokemon-fr.vercel.app/api/v1/pokemon')
       .then((response) => response.json())
       .then((data) => setPokemons(data));
   }, []);
+
+  const pokemonsFiltered = useMemo(() => {
+    const indexStart = pageNumber * numberPerPage;
+    const indexEnd = indexStart + numberPerPage;
+
+    return pokemons.slice(indexStart, indexEnd);
+  }, [pokemons, numberPerPage, pageNumber]);
 
   return (
     <>
@@ -24,9 +33,40 @@ export default function Home() {
         <h1 className="text-6xl text-white font-bold text-center">
           Pokedex
         </h1>
+        <div className="flex justify-center gap-2">
+          <span className="text-white">
+            Nombre de pokemons par page
+          </span>
+          <select
+            id="numberPerPage"
+            onChange={(e) => setNumberPerPage(Number(e.target.value))}
+          >
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div className="flex justify-center gap-2 my-2">
+          <button
+            type="button"
+            onClick={() => setPageNumber(pageNumber - 1)}
+            className="bg-white p-2 rounded-md shadow-sm disabled:bg-gray-400 min-w-[150px] disabled:cursor-not-allowed"
+            disabled={pageNumber === 0}
+          >
+            Page précédente
+          </button>
+          <button
+            type="button"
+            onClick={() => setPageNumber(pageNumber + 1)}
+            className="bg-white p-2 rounded-md shadow-sm disabled:bg-gray-400 min-w-[150px]  disabled:cursor-not-allowed"
+            disabled={pokemons.length <= (pageNumber + 1) * numberPerPage}
+          >
+            Page suivante
+          </button>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-6 gap-2 p-2">
-          {pokemons.map((pokemon) => (
-            <PokemonCard key={pokemon.pokedexId} pokemon={pokemon} />
+          {pokemonsFiltered.map((pokemon) => (
+            <PokemonCard key={`${pokemon.pokedexId}${pokemon.name.fr}`} pokemon={pokemon} />
           ))}
         </div>
       </main>
