@@ -1,6 +1,17 @@
+import PokemonCard from '@/components/PokemonCard';
+import { Pokemon } from '@/types/pokemon';
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+
+  useEffect(() => {
+    fetch('https://api-pokemon-fr.vercel.app/api/v1/pokemon')
+      .then((response) => response.json())
+      .then((data) => setPokemons(data));
+  }, []);
+
   return (
     <>
       <Head>
@@ -9,10 +20,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1 className="text-2xl text-blue-500 font-bold text-center">
+      <main className="bg-blue-500 min-h-screen">
+        <h1 className="text-6xl text-white font-bold text-center">
           Pokedex
         </h1>
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-2 p-2">
+          {pokemons.map((pokemon) => (
+            <PokemonCard key={pokemon.pokedexId} pokemon={pokemon} />
+          ))}
+        </div>
       </main>
     </>
   );
