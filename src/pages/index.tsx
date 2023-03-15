@@ -30,7 +30,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-blue-500 min-h-screen">
-        <h1 className="text-6xl text-white font-bold text-center">
+        <h1 className="text-2xl md:text-6xl text-white font-bold text-center">
           Pokedex
         </h1>
         <div className="flex justify-center gap-2">
@@ -46,25 +46,29 @@ export default function Home() {
             <option value="100">100</option>
           </select>
         </div>
-        <div className="flex justify-center gap-2 my-2">
-          <button
-            type="button"
-            onClick={() => setPageNumber(pageNumber - 1)}
-            className="bg-white p-2 rounded-md shadow-sm disabled:bg-gray-400 min-w-[150px] disabled:cursor-not-allowed"
-            disabled={pageNumber === 0}
-          >
-            Page précédente
-          </button>
-          <button
-            type="button"
-            onClick={() => setPageNumber(pageNumber + 1)}
-            className="bg-white p-2 rounded-md shadow-sm disabled:bg-gray-400 min-w-[150px]  disabled:cursor-not-allowed"
-            disabled={pokemons.length <= (pageNumber + 1) * numberPerPage}
-          >
-            Page suivante
-          </button>
+        <div className="flex justify-center gap-2 my-2 flex-col md:flex-row">
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={() => setPageNumber(pageNumber - 1)}
+              className="bg-white p-2 rounded-md shadow-sm disabled:bg-gray-400 min-w-[150px] disabled:cursor-not-allowed"
+              disabled={pageNumber === 0}
+            >
+              Page précédente
+            </button>
+          </div>
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={() => setPageNumber(pageNumber + 1)}
+              className="bg-white p-2 rounded-md shadow-sm disabled:bg-gray-400 min-w-[150px]  disabled:cursor-not-allowed"
+              disabled={pokemons.length <= (pageNumber + 1) * numberPerPage}
+            >
+              Page suivante
+            </button>
+          </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-2 p-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-2 p-2">
           {pokemonsFiltered.map((pokemon) => (
             <PokemonCard key={`${pokemon.pokedexId}${pokemon.name.fr}`} pokemon={pokemon} />
           ))}

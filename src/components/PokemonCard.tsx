@@ -13,16 +13,16 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
           src={pokemon.sprites.shiny || pokemon.sprites.regular}
           alt={pokemon.name.fr}
           onLoad={() => setIsImgLoading(false)}
-          className="h-48 mx-auto"
+          className="w-full"
         />
       </div>
 
-      <h2 className="font-bold text-xl">
+      <h2 className="font-bold md:text-xl">
         {`#${pokemon.pokedexId} - ${pokemon.name.fr}`}
       </h2>
       <p className="flex gap-2">
         {pokemon.types?.map((type) => (
-          <span key={type.name} className="flex flex-col gap-2 items-center">
+          <span key={type.name} className="flex flex-col text-sm gap-2 items-center">
             {type.name}
             <img src={type.image} alt={type.name} className="w-8" />
           </span>
