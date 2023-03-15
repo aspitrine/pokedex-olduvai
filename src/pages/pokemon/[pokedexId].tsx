@@ -1,34 +1,26 @@
 import PokemonStats from '@/components/PokemonStats';
 import type { Pokemon } from '@/types/pokemon';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { ChevronLeft } from 'react-feather';
 
-export default function PokemonDetail() {
-  // useRouter me permettra de récupérer le paramètre de mon url
-  const router = useRouter();
-  const { pokedexId } = router.query;
+interface PokemonDetailProps {
+  pokemon: Pokemon;
+}
+// Code exécuter côté back.
+export const getServerSideProps: GetServerSideProps<PokemonDetailProps> = async (ctx) => {
+  const pokedexId = ctx.params?.pokedexId as string;
 
-  const [pokemon, setPokemon] = useState<Pokemon>();
+  // Fetch data from external API
+  const res = await fetch(`https://api-pokemon-fr.vercel.app/api/v1/pokemon/${pokedexId}`);
+  const pokemon = await res.json();
 
-  useEffect(() => {
-    if (!pokedexId) return;
+  // Pass data to the page via props
+  return { props: { pokemon } };
+};
 
-    fetch(`https://api-pokemon-fr.vercel.app/api/v1/pokemon/${pokedexId}`)
-      .then((response) => response.json())
-      .then((data) => setPokemon(data));
-  }, [pokedexId]);
-
-  if (!pokemon) {
-    return (
-      <div>
-        Chargement...
-      </div>
-    );
-  }
-
+export default function PokemonDetail({ pokemon } : PokemonDetailProps) {
   return (
     <>
       <Head>
