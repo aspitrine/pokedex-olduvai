@@ -10,7 +10,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        Hello
+        <h1 className="text-2xl text-blue-500 font-bold text-center">
+          Pokedex
+        </h1>
       </main>
     </>
   );
