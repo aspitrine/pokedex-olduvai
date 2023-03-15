@@ -6,7 +6,7 @@ export interface Name {
 
 export interface Sprites {
     regular: string;
-    shiny: string;
+    shiny?: string;
     gmax?: any;
 }
 

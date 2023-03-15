@@ -1,6 +1,7 @@
 import PokemonCard from '@/components/PokemonCard';
 import { Pokemon } from '@/types/pokemon';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 export default function Home() {
@@ -70,7 +71,13 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-2 p-2">
           {pokemonsFiltered.map((pokemon) => (
-            <PokemonCard key={`${pokemon.pokedexId}${pokemon.name.fr}`} pokemon={pokemon} />
+            <Link
+              className="flex"
+              href={`/pokemon/${pokemon.pokedexId}`}
+              key={`${pokemon.pokedexId}${pokemon.name.fr}`}
+            >
+              <PokemonCard pokemon={pokemon} />
+            </Link>
           ))}
         </div>
       </main>
