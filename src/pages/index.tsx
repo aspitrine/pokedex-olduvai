@@ -2,18 +2,24 @@ import PokemonCard from '@/components/PokemonCard';
 import { Pokemon } from '@/types/pokemon';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-export default function Home() {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+// Code exécuter côté back.
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await fetch('https://api-pokemon-fr.vercel.app/api/v1/pokemon');
+  const pokemons = await res.json();
+
+  // Pass data to the page via props
+  return { props: { pokemons } };
+}
+
+interface HomeProps {
+  pokemons: Pokemon[];
+}
+export default function Home({ pokemons }: HomeProps) {
   const [numberPerPage, setNumberPerPage] = useState(20);
   const [pageNumber, setPageNumber] = useState(0);
-
-  useEffect(() => {
-    fetch('https://api-pokemon-fr.vercel.app/api/v1/pokemon')
-      .then((response) => response.json())
-      .then((data) => setPokemons(data));
-  }, []);
 
   const pokemonsFiltered = useMemo(() => {
     const indexStart = pageNumber * numberPerPage;
